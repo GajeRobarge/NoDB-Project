@@ -7,10 +7,37 @@ import axios from 'axios';
 
 
 class App extends Component {
-
-  state = {
+  constructor(props) {
+    super(props)
+  this.state = {
     search: "",
     img: []
+
+  }
+  this.clearForm = this.clearForm.bind(this);
+}
+  onClick() {
+    axios.get('/search?query=' + this.state.search)
+      .then(response => {
+        this.setState({
+          img: response.data
+        })
+      })
+  }
+
+  handleInputChange(event) {
+    const value = event.target.value;
+    this.setState({
+      search: value
+    })
+  }
+
+
+  clearForm(event) {
+    this.setState({
+      search: "",
+      img: []
+    })
   }
 
 
@@ -40,40 +67,15 @@ class App extends Component {
           />
         </div>
         <button onClick={() => { this.onClick() }} >Submit</button>
-        <button>Reset</button>
-        {/* onClick={this.handleDelete} */}
+        <button onClick={this.clearForm}>Reset</button>
+       
       
       
       
       </div>
     );
   }
-
-  onClick() {
-    axios.get('/search?query=' + this.state.search)
-      .then(response => {
-        this.setState({
-          img: response.data
-        })
-      })
-  }
-
-  handleInputChange(event) {
-    const value = event.target.value;
-    this.setState({
-      search: value
-    })
-  }
-
-
-  // handleDelete(event) {
-  //   const value = event.target.value;
-  //   this.setState({
-  //     search: "",
-  //     img: []
-  //   })
-  
-  }
+}
   
 
 
